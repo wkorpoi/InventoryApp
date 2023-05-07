@@ -25,14 +25,14 @@ app.use(bodyParser.json())
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  db.collection('messages').find().toArray((err, result) => {
+  db.collection('reports').find().toArray((err, result) => {
     if (err) return console.log(err)
-    res.render('index.ejs', {messages: result})
+    res.render('index.ejs', {reports: result})
   })
 })
 
-app.post('/inventory', (req, res) => {
-  db.collection('messages').insertOne({name: req.body.items, msg: req.body.quantity}, (err, result) => {
+app.post('/report', (req, res) => {
+  db.collection('reports').insertOne({child:req.body.child, behavior:req.body.behavior, rating:req.body.rating}, (err, result) => {
     if (err) return console.log(err)
     console.log('saved to database')
     res.redirect('/')
@@ -55,11 +55,11 @@ app.put('/inventory', (req, res) => {
   })
 })
 
-app.put('/inventory', (req, res) => {
-  db.collection('messages')
-  .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
+app.put('/edit', (req, res) => {
+  db.collection('reports')
+  .findOneAndUpdate({_id:ObjectId(req.body._id)}, {
     $set: {
-      thumbUp:req.body
+    behavior:req.body.newText
     }
     
   }, {
@@ -71,9 +71,9 @@ app.put('/inventory', (req, res) => {
   })
 })
 
-app.delete('/inventory', (req, res) => {
+app.delete('/reports', (req, res) => {
   console.log('working')
-  db.collection('messages').deleteOne({_id:ObjectId(req.body._id)}), (err, result) => {
+  db.collection('reports').deleteMany({}), (err, result) => {
     if (err) return res.send(500, err)
     res.send('Item deleted!')
   }

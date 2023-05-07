@@ -10,25 +10,33 @@
 
 <body>
 
-  <h1>My Inventory Spot</h1>
+  <h1>Day Care Daily Report Chart</h1>
 
   <h3> Input Inventory </h3>
 
-    <form action="/inventory" method="POST">
-    <input class= "items" input type="text" placeholder="item" name="items" required="true">
-    <input class= "quantity" input type="number" placeholder="0" name="quantity" required="true">
+    <form action="/report" method="POST">
+    <input class= "child" type="text" placeholder="child name" name="child" required="true">
+    <input class= "behavior" type="text" placeholder="behavior" name="behavior" required="true">
+    <input class= "rating" type="number" placeholder="0" name="rating" required="true" >
     <button type="submit">Submit</button>
     </form>
 
-    <ul class="inventoryList">
-    <% for(var i=0; i<messages.length; i++) {%>
+    <ul class="reports">
+    <% for(var i=0; i<reports.length; i++) {%>
       <li class="inventory">
-        <span class="item"><%= messages[i].name %></span>
-        <span class="quantity"><%= messages[i].msg %></span>
-        <button class="delete-button" value="<%= messages[i]._id%>"> Delete Item</button>
+        <span class="item"><%=reports[i].child %></span>
+        <div>
+      <input class= "behavior" data-id="<%= reports[i]._id%>" type="text" value="<%= reports[i].behavior%>" name="behavior" required="true"> 
+      <span class="edit" value="<%= reports[i]._id%>"> ✏️ </span> 
+    </div>    
+    <% for(var s=0; s<reports[i].rating; s++) {%>
+        <span class="quantity">⭐️</span>
+    <% } %>
+        
       </li>
     <% } %>
     </ul>
+<button class="clear-all"> Clear All </button>
 
   <script src="main.js"></script>
   <script src="server.js"></script>
