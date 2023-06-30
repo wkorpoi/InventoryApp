@@ -61,7 +61,6 @@ app.put('/edit', (req, res) => {
     $set: {
     behavior:req.body.newText
     }
-    
   }, {
     sort: {_id: -1},
     upsert: true
